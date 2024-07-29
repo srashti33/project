@@ -24,7 +24,7 @@ app.post("/register", async (req, res) => {
     }
     res.send({result,auth:token});
   })
-  // res.send(result);
+  res.send(result);
 });
 
 app.post("/login", async (req, res) => {

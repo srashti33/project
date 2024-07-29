@@ -1,8 +1,10 @@
+// db/User.js
 const mongoose = require('mongoose');
-const userSchema=new mongoose.Schema({
-    name:String,
-    email:String,
-    password:String
+
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  isAdmin: { type: Boolean, default: false } // Add isAdmin field
 });
 
-module.exports = mongoose.model('users',userSchema);
+module.exports = mongoose.model('user', userSchema);
