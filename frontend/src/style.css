@@ -1,0 +1,225 @@
+body {
+    background-image: url('https://img.freepik.com/free-photo/black-friday-elements-assortment_23-2149074076.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1722124800&semt=ais_user');
+    background-size: cover;
+    background-position: center;
+    /* background-repeat: no-repeat; */
+    height: 100vh;
+}
+
+.nav-ul {
+    /* position: fixed; */
+    background-color:#173B45;
+    height: 70px;
+    display: flex;
+    /* position: fixed; */
+    
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.translucent-card {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.translucent-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn-delete {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #ff3b3b;
+    transform: scale(1.05);
+}
+
+.btn-update {
+    background-color: #4a90e2;
+    border: none;
+    color: white;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-update:hover {
+    background-color: #357ABD;
+}
+
+.nav-ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #FFD700;
+}
+
+.logo { 
+    height: 70px;
+    margin: 0;
+    float: left;
+    filter: invert(2);
+    background-color: #173B45;
+    
+}
+
+.footer {
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    color: rgb(177, 175, 175);
+    background-color: #173B45; 
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.formm {
+    width: 90%; 
+    max-width: 600px; 
+    margin: 2rem auto; 
+    padding: 2rem;
+    border-radius: 10px; 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+    background: linear-gradient(135deg, #f0f4f8, #e1e8ed); 
+}
+
+.formm .form-control {
+    width: 100%; 
+    border-radius: 4px; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #d6d8db; 
+    padding: 10px; 
+    margin-bottom: 1rem; 
+    transition: border-color 0.3s; 
+}
+
+.formm .form-control:focus {
+    border-color: #5bc0de; 
+    outline: none; 
+}
+
+.invalid-input {
+    color: darkred;
+    display: flex;
+    justify-content: left;
+    margin-left: 5%;
+    font-size: 14px; 
+}
+.butt{
+    padding-bottom: 5vh;
+    margin-bottom: 50px;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.card {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+    /* margin: 5%; */
+}
+
+.card.fade-in {
+    animation-delay: var(--fade-in-delay);
+}
+.list-group {
+    margin-bottom: 6%;
+    margin-top: 6%;
+}
+
+.list-group-item {
+    text-align: left;
+    padding: 5%;
+    margin-bottom: 6%;
+    position: relative;
+    margin: 20px;  /* Space from the edges of the container */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: calc(100% - 40px); /* Adjust width to accommodate margins */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.list-group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);  /* Semi-transparent white */
+    backdrop-filter: blur(10px);  /* Glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2);  /* Slight border */
+}
+
+.price {
+    background-color: rgba(35, 98, 165, 0.5); /* Light blue background */
+    color: #040404; /* Dark text color */
+    padding: 10px 15px; /* Padding for spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin: 20px 20px 10px; /* Space above and below, match margin with .list-group-item */
+    width: calc(100% - 40px); /* Same width as .list-group-item */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    text-align: right; /* Align text to the right */
+}
+
+
+.price:hover {
+    background-color: rgba(5, 42, 82, 0.7); /* Darker background on hover */
+    transform: scale(1.02); /* Slightly scale up on hover */
+    color: white;
+}
+.cart{
+    /* margin-bottom: 20px; */
+    padding-bottom: 5%;
+}
+.categories {
+    margin-top: 20px;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.glass-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card {
+    border: none; /* Remove default card border */
+}
