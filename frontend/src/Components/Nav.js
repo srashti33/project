@@ -26,7 +26,7 @@ export default function Nav() {
           <ul className='nav-ul'>
             <li><Link to="/">Products</Link></li>
             {isAdmin && <li><Link to="/add">Add Products</Link></li>} {/* Conditionally render Add Products */}
-            {isAdmin && <li><Link to="/update">Update Products</Link></li>} {/* Conditionally render Update Products */}
+            {/* {isAdmin && <li><Link to="/update">Update Products</Link></li>} Conditionally render Update Products */}
             <li><Link to="/profile">Profile</Link></li>
             {!isAdmin&&<li><Link to="/cart">Cart</Link></li>}
             <li><Link onClick={logout} to="/signup">Logout ({user.email})</Link></li> {/* Access user name directly */}

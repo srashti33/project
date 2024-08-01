@@ -7,6 +7,7 @@ import AddProducts from "./AddProducts";
 import ProductList from "./ProductList";
 import UpdateProduct from "./UpdateProduct";
 import Profile from "./Profile";
+import Categories from "./Categories";
 // import Categories from "./Categories";
 import Cart from "./Cart";
 export default function Routing() {
@@ -14,7 +15,9 @@ export default function Routing() {
     <div>
       <Routes>
         <Route element={<PrivateComponent />}>
-          <Route path="/" element={<ProductList/>} />
+          {/* <Route path="/" element={<ProductList/>} /> */}
+          <Route path="/" element={<Categories/>} />
+          <Route path="/products/category/:category" element={<ProductList />} />
           <Route path="/add" element={<AddProducts/>} />
           <Route path="/update/:id" element={<UpdateProduct/>} />
 

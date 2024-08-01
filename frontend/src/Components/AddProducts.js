@@ -38,7 +38,7 @@ export default function AddProducts() {
 
     if (result) {
       alert("Product added successfully");
-      navigate("/"); // Redirect to home or another page
+      navigate("/"); 
     } else {
       alert("Failed to add product");
     }

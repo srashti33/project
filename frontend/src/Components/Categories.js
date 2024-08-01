@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { Container, Card, Row, Col, Spinner, Alert } from 'react-bootstrap'; 
+import { Link } from 'react-router-dom';
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
@@ -10,15 +10,19 @@ const Categories = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch("http://localhost:4000/categories"); // Adjust the endpoint as needed
+                const response = await fetch("http://localhost:4000/products", {
+                    headers: {
+                        authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+                    }
+                });
                 if (!response.ok) {
-                    throw new Error("Failed to fetch categories");
+                    throw new Error('Failed to fetch products');
                 }
                 const data = await response.json();
-                setCategories(data);
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-                setError(error.message);
+                const uniqueCategories = [...new Set(data.map(item => item.category))]; 
+                setCategories(uniqueCategories);
+            } catch (err) {
+                setError(err);
             } finally {
                 setLoading(false);
             }
@@ -27,30 +31,30 @@ const Categories = () => {
         fetchCategories();
     }, []);
 
+  
+    useEffect(() => {
+        console.log(categories);
+    }, [categories]);
+
+    if (loading) return <Spinner animation="border" />;
+    if (error) return <Alert variant="danger">Error fetching categories: {error.message}</Alert>;
+
     return (
-        <Container className="categories">
-            <h2>Categories</h2>
-            {loading ? (
-                <Spinner animation="border" />
-            ) : error ? (
-                <Alert variant="danger">{error}</Alert>
-            ) : (
-                <Row>
-                    {categories.map((category) => (
-                        <Col key={category.id} md={4} className="mb-4">
-                            <Link to={`/categories/${category.id}`} style={{ textDecoration: "none" }}>
-                                <Card className="glass-effect">
-                                    <Card.Body>
-                                        <Card.Title style={{ textAlign: "center", fontSize: "1.5em" }}>
-                                            {category.name}
-                                        </Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </Link>
-                        </Col>
-                    ))}
-                </Row>
-            )}
+        <Container className="categories-container">
+            <h1>Categories</h1>
+            <Row>
+                {categories.map((category, index) => (
+                    <Col xs={12} sm={6} md={4} lg={3} key={index} className="mb-4">
+                        <Link to={`/products/category/${category}`} style={{ textDecoration: "none" }}>
+                            <Card className="category-card">
+                                <Card.Body>
+                                    <Card.Title>{category}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                    </Col>
+                ))}
+            </Row>
         </Container>
     );
 };

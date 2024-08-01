@@ -1,15 +1,44 @@
-import React from "react";
-import { Container, Card, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Card, Button, Spinner, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user')); // Retrieve user info from local storage
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    } else {
+      setError("No user data found.");
+    }
+    setLoading(false);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear local storage
-    navigate('/signup'); // Redirect to signup or login page
+    localStorage.clear();
+    navigate('/signup');
   };
+
+  if (loading) {
+    return (
+      <Container className="text-center my-4">
+        <Spinner animation="border" />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="text-center my-4">
+        <Alert variant="danger">{error}</Alert>
+        <Button onClick={() => navigate('/signup')}>Go to Signup</Button>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -17,6 +46,15 @@ const Profile = () => {
       {user ? (
         <Card className="text-center">
           <Card.Body>
+            {user.profilePicture && (
+              <Card.Img
+                variant="top"
+                src={user.profilePicture}
+                alt="Profile"
+                className="mb-3 rounded-circle"
+                style={{ width: '150px', height: '150px' }}
+              />
+            )}
             <Card.Title>{user.name}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{user.email}</Card.Subtitle>
             <Card.Text>

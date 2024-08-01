@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap"; 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -8,16 +8,21 @@ export default function ProductList() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [productPP] = useState(12);
-  const [loading, setLoading] = useState(false); // Loading state for fetching products
+  const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState([]); 
+  const { category } = useParams(); 
 
   useEffect(() => {
-    getProducts();
+    if (category) {
+      getProductsByCategory(category);
+    } else {
+      getProducts();
+    }
     checkAdminStatus();
-    fetchCart(); // Fetch cart data when the component mounts
-  }, []);
+    fetchCart();
+  }, [category]); 
 
-  // Check admin status
+
   const checkAdminStatus = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.isAdmin) {
@@ -25,13 +30,76 @@ export default function ProductList() {
     }
   };
 
-  // Handle search input
+
+  const getProductsByCategory = async (category) => {
+    setLoading(true);
+    
+    const response = await fetch(`http://localhost:4000/products/category/${category}`, {
+      headers: {
+        authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+      }
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      setProducts(result);
+    } else {
+      console.error("Error fetching products by category:", response.statusText);
+    }
+
+    setLoading(false);
+  };
+
+
+  const getProducts = async () => {
+    setLoading(true);
+    
+    const response = await fetch("http://localhost:4000/products", {
+      headers: {
+        authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+      }
+    });
+    if (response.ok) {
+      const result = await response.json();
+      setProducts(result);
+    } else {
+      console.error("Error fetching products:", response.statusText);
+    }
+
+    setLoading(false);
+  };
+
+
+  const fetchCart = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return; 
+
+    const userId = user.email; 
+    try {
+      const response = await fetch(`http://localhost:4000/cart/${userId}`, {
+        headers: {
+          authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+        }
+      });
+
+      if (response.ok) {
+        const cartData = await response.json();
+        setCart(cartData); 
+      } else {
+        console.error("Error fetching cart:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    }
+  };
+
+
   const handleSearch = async (e) => {
     const key = e.target.value;
     setQuery(key);
 
     if (key.length > 0) {
-      setLoading(true); // Start loading
+      setLoading(true); 
       try {
         const response = await fetch(`http://localhost:4000/search/${key}`, {
           headers: {
@@ -47,57 +115,14 @@ export default function ProductList() {
       } catch (error) {
         console.error("Error fetching search results:", error);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false); 
       }
     } else {
       getProducts();
     }
   };
 
-  // Fetch products
-  const getProducts = async () => {
-    setLoading(true); // Start loading
-    
-    const response = await fetch("http://localhost:4000/products", {
-      headers: {
-        authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
-      }
-    });
-    if (response.ok) {
-      const result = await response.json();
-      setProducts(result);
-    } else {
-      console.error("Error fetching products:", response.statusText);
-    }
 
-    setLoading(false); // End loading
-  };
-
-  // Fetch cart items for the user
-  const fetchCart = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user) return; // If user is not logged in, exit
-
-    const userId = user.email; // Get user ID from local storage
-    try {
-      const response = await fetch(`http://localhost:4000/cart/${userId}`, {
-        headers: {
-          authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
-        }
-      });
-
-      if (response.ok) {
-        const cartData = await response.json();
-        setCart(cartData); // Set cart state with data from the database
-      } else {
-        console.error("Error fetching cart:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-    }
-  };
-
-  // Delete a product
   const deleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
@@ -118,11 +143,11 @@ export default function ProductList() {
     }
   };
 
-  // Add a product to the cart
+
   const addToCart = async (product) => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      const userId = user ? user.email : null; // Get user ID from local storage
+      const userId = user ? user.email : null; 
       if (!userId) {
         alert("Please log in to add products to your cart.");
         return;
@@ -145,18 +170,16 @@ export default function ProductList() {
         throw new Error("Failed to add product to cart");
       }
 
-      const updatedCart = await response.json(); // Get the updated cart from the response
-      console.log("Updated Cart:", updatedCart); // Optional: Log the updated cart
+      const updatedCart = await response.json(); 
+      console.log("Updated Cart:", updatedCart); 
 
-      // Update local cart state
+
       setCart((prevCart) => {
         const existingProduct = prevCart.find((item) => item.productId === product._id);
-        // console.log("fghvjn",prevCart,existingProduct)
         if (existingProduct) {
-          console.log(existingProduct._doc.quantity);
           return prevCart.map((item) =>
             item.productId === product._id
-              ? { ...item, quantity: item._doc.quantity + 1 }
+              ? { ...item, quantity: item.quantity + 1 }
               : item
           );
         } else {
@@ -170,6 +193,7 @@ export default function ProductList() {
       alert("There was an error adding the product to your cart.");
     }
   };
+
 
   const indexLastP = currentPage * productPP;
   const indexFirstP = indexLastP - productPP;
@@ -201,7 +225,7 @@ export default function ProductList() {
         aria-label="Search for products"
       />
       <br />
-      {loading && <p>Loading products...</p>} {/* Loading message */}
+      {loading && <p>Loading products...</p>} 
       <Row>
         {currentP.length > 0 ? (
           currentP.map((product, index) => (
@@ -226,7 +250,7 @@ export default function ProductList() {
                     >
                       Add to Cart
                     </Button>
-                  ) : " "}
+                  ) : null}
                   {isAdmin && (
                     <>
                       <Button
@@ -238,7 +262,7 @@ export default function ProductList() {
                       </Button>
                       <br />
                       <br />
-                      <Link to={"/update/" + product._id} style={{ textDecoration: "none" }}>
+                      <Link to={`/update/${product._id}`} style={{ textDecoration: "none" }}>
                         <Button variant="primary" className="btn-update">Update</Button>
                       </Link>
                     </>

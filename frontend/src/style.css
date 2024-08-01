@@ -223,3 +223,50 @@ body {
 .card {
     border: none; /* Remove default card border */
 }
+/* 
+ */
+  
+  .cart-count {
+    display: inline-block;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    padding: 0.2em 0.5em;
+    font-size: 0.75em;
+    margin-left: 0.5em;
+    position: absolute; /* Change to absolute */
+    top: -5px; /* Adjust position up */
+    right: -10px; /* Adjust position to the right */
+  }
+  
+  .categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px; /* Add some margin around the container */
+}
+
+.category-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    /* Removed fixed width to make it responsive */
+    max-width: 100%; /* Allow cards to scale down */
+    text-align: center; /* Center text */
+}
+
+.category-card:hover {
+    transform: translateY(-5px); /* Lift the card on hover */
+}
+
+/* Optional: Add media queries for additional responsiveness if needed */
+@media (max-width: 768px) {
+    .category-card {
+        margin: 5px; /* Smaller margin on mobile */
+    }
+}
+

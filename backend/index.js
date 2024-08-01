@@ -8,7 +8,8 @@ const jwtkey = "e-commm";
 
 const User = require("./db/User");
 const Product = require("./db/Product");
-const CartRoutes = require("./cartRoutes"); // Import the cart routes
+const CartRoutes = require("./cartRoutes"); 
+
 const app = express();
 
 app.use(express.json());
@@ -77,6 +78,19 @@ app.get("/product/:id",verifyToken, async (req, res) => {
     res.send({ result: "no record found" });
   }
 });
+app.get("/products/category/:category", verifyToken, async (req, res) => {
+  const { category } = req.params;
+  try {
+    const products = await Product.find({ category: category });
+    if (products.length > 0) {
+      res.json(products);
+    } else {
+      res.status(404).json({ result: "No products found in this category." });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.put("/product/:id",verifyToken, async (req, res) => {
   let result = await Product.updateOne(
@@ -91,7 +105,7 @@ app.put("/product/:id",verifyToken, async (req, res) => {
 app.get("/search/:key", verifyToken, async (req, res) => {
   let result = await Product.find({
     $or: [
-      { name: { $regex: req.params.key, $options: "i" } }, // case-insensitive search
+      { name: { $regex: req.params.key, $options: "i" } }, 
       { company: { $regex: req.params.key, $options: "i" } },
       { category: { $regex: req.params.key, $options: "i" } },
       { price: { $regex: req.params.key } },
@@ -100,7 +114,7 @@ app.get("/search/:key", verifyToken, async (req, res) => {
   res.send(result);
 });
 
-// Integrate Cart Routes
+
 app.use("/", CartRoutes);
 
 function verifyToken(req, res, next) {
@@ -119,8 +133,11 @@ function verifyToken(req, res, next) {
   }
 }
 
-// Export verifyToken if it's needed elsewhere
+
 module.exports = { verifyToken };
+app.get("/", (req, res) => {
+  res.send("Welcome to the API!");
+});
 
 
 
