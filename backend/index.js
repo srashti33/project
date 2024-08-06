@@ -13,9 +13,11 @@ const CartRoutes = require("./cartRoutes");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin:'*'
+}));
 
-app.post("/register", async (req, res) => {
+app.post("/api/v1/register", async (req, res) => {
   let user = new User(req.body);
   let result = await user.save();
   result = result.toObject();
@@ -30,7 +32,7 @@ app.post("/register", async (req, res) => {
   });
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/v1/login", async (req, res) => {
   if (req.body.password && req.body.email) {
     let user = await User.findOne(req.body).select("-password");
     if (user) {
@@ -50,13 +52,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/add-product",verifyToken, async (req, res) => {
+app.post("/api/v1/add-product",verifyToken, async (req, res) => {
   let product = new Product(req.body);
   let result = await product.save();
   res.send(result);
 });
 
-app.get("/products",verifyToken, async (req, res) => {
+app.get("/api/v1/products",verifyToken, async (req, res) => {
   let products = await Product.find();
   if (products.length > 0) {
     res.send(products);
@@ -65,12 +67,12 @@ app.get("/products",verifyToken, async (req, res) => {
   }
 });
 
-app.delete("/product/:id",verifyToken, async (req, res) => {
+app.delete("/api/v1/product/:id",verifyToken, async (req, res) => {
   let result = await Product.deleteOne({ _id: req.params.id });
   res.send(result);
 });
 
-app.get("/product/:id",verifyToken, async (req, res) => {
+app.get("/api/v1/product/:id",verifyToken, async (req, res) => {
   let result = await Product.findOne({ _id: req.params.id });
   if (result) {
     res.send(result);
@@ -78,7 +80,7 @@ app.get("/product/:id",verifyToken, async (req, res) => {
     res.send({ result: "no record found" });
   }
 });
-app.get("/products/category/:category", verifyToken, async (req, res) => {
+app.get("/api/v1/products/category/:category", verifyToken, async (req, res) => {
   const { category } = req.params;
   try {
     const products = await Product.find({ category: category });
@@ -92,7 +94,7 @@ app.get("/products/category/:category", verifyToken, async (req, res) => {
   }
 });
 
-app.put("/product/:id",verifyToken, async (req, res) => {
+app.put("/api/v1/product/:id",verifyToken, async (req, res) => {
   let result = await Product.updateOne(
     { _id: req.params.id },
     {
@@ -102,7 +104,7 @@ app.put("/product/:id",verifyToken, async (req, res) => {
   res.send(result);
 });
 
-app.get("/search/:key", verifyToken, async (req, res) => {
+app.get("/api/v1/search/:key", verifyToken, async (req, res) => {
   let result = await Product.find({
     $or: [
       { name: { $regex: req.params.key, $options: "i" } }, 
@@ -115,7 +117,7 @@ app.get("/search/:key", verifyToken, async (req, res) => {
 });
 
 
-app.use("/", CartRoutes);
+app.use("/api/v1/", CartRoutes);
 
 function verifyToken(req, res, next) {
   let token = req.headers["authentication"];

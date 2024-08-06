@@ -30,7 +30,7 @@ const Cart = () => {
   }
 
   try {
-    const response = await fetch(`http://localhost:4000/cart/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`, {
       headers: {
         authentication: `bearer ${JSON.parse(
           localStorage.getItem("token")
@@ -55,7 +55,7 @@ const Cart = () => {
   const removeFromCart = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:4000/cart/${userId}/products/${id}`,
+        `${process.env.REACT_APP_API_URL}/cart/${userId}/products/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -85,7 +85,7 @@ const Cart = () => {
     if (quantity < 1) return;
     try {
       const response = await fetch(
-        `http://localhost:4000/cart/${userId}/products/${id}`,
+        `${process.env.REACT_APP_API_URL}/cart/${userId}/products/${id}`,
         {
           method: "PUT",
           headers: {

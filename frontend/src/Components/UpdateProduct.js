@@ -15,7 +15,7 @@ export default function UpdateProduct() {
   }, []);
 
   const getProductDetails = async () => {
-    let response = await fetch(`http://localhost:4000/product/${params.id}`, {
+    let response = await fetch(`${process.env.REACT_APP_API_URL}/${params.id}`, {
       headers: {
         authentication: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
@@ -40,7 +40,7 @@ export default function UpdateProduct() {
     // }
     // const userId = JSON.parse(localStorage.getItem("user"))._id;
 
-    let result = await fetch(`http://localhost:4000/product/${params.id}`, {
+    let result = await fetch(`${process.env.REACT_APP_API_URL}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify({ name, price, category, company }),
       headers: {

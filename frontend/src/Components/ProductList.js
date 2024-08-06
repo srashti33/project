@@ -34,7 +34,7 @@ export default function ProductList() {
   const getProductsByCategory = async (category) => {
     setLoading(true);
     
-    const response = await fetch(`http://localhost:4000/products/category/${category}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/products/category/${category}`, {
       headers: {
         authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
       }
@@ -54,7 +54,7 @@ export default function ProductList() {
   const getProducts = async () => {
     setLoading(true);
     
-    const response = await fetch("http://localhost:4000/products", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/products`, {
       headers: {
         authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
       }
@@ -76,7 +76,7 @@ export default function ProductList() {
 
     const userId = user.email; 
     try {
-      const response = await fetch(`http://localhost:4000/cart/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/cart/${userId}`, {
         headers: {
           authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
         }
@@ -101,7 +101,7 @@ export default function ProductList() {
     if (key.length > 0) {
       setLoading(true); 
       try {
-        const response = await fetch(`http://localhost:4000/search/${key}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/search/${key}`, {
           headers: {
             authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
           }
@@ -126,7 +126,7 @@ export default function ProductList() {
   const deleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const response = await fetch(`http://localhost:4000/product/${id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/product/${id}`, {
           method: "DELETE",
           headers: {
             authentication: `bearer ${JSON.parse(localStorage.getItem('token'))}`
@@ -153,7 +153,7 @@ export default function ProductList() {
         return;
       }
       
-      const response = await fetch("http://localhost:4000/cart", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

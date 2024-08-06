@@ -23,7 +23,7 @@ export default function AddProducts() {
     }
     const userId = JSON.parse(localStorage.getItem("user"))._id;
 
-    let result = await fetch("http://localhost:4000/add-product", {
+    let result = await fetch(`${process.env.REACT_APP_API_URL}/add-product`, {
       method: "POST",
       body: JSON.stringify({ name, price, category, company, userId,image:"https://miro.medium.com/v2/resize:fit:2800/0*OqpTl9j-4UyfU0Hr.jpeg" }),
       headers: {

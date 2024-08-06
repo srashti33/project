@@ -14,7 +14,7 @@ export default function Login() {
       }
     })
     const handleLogin=async ()=>{
-      let result=await fetch("http://localhost:4000/login",{
+      let result=await fetch(`${process.env.REACT_APP_API_URL}/login`,{
         method:'post',
         body:JSON.stringify({email,password}),
         headers:{

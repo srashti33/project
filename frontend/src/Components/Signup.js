@@ -16,7 +16,7 @@ export default function Signup() {
       }
     })
     const collectData=async ()=>{
-        let result=await fetch('http://localhost:4000/register',{
+        let result=await fetch(`${process.env.REACT_APP_API_URL}/register`,{
           method :'post',
           body : JSON.stringify({name,email,password}),
           headers :{
